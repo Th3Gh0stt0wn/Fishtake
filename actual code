@@ -1,0 +1,114 @@
+import pygame
+import random
+
+pygame.init()
+screen = pygame.display.set_mode((1200,800)) #screen is a rectangle, not square!
+pygame.display.set_caption("fish mouse imput")
+
+#mouse input
+xpos = 0
+ypos = 0
+mousePos = (xpos, ypos)
+
+background = 1
+
+fishieXpos = []
+fishieYpos = []
+fishieXpos2 = []
+fishieYpos2 = []
+fishieXpos3 = []
+fishieYpos3 = []
+
+#load images
+schoolImg = pygame.image.load("school2.png").convert_alpha()
+pygame.Surface.set_colorkey (schoolImg, [255,255,255])
+schoolImg = pygame.transform.scale(schoolImg, (1000, 800))
+
+schoolImg2 = pygame.image.load("school-1.png").convert_alpha()
+pygame.Surface.set_colorkey (schoolImg2, [255,255,255])
+
+pineappleImg = pygame.image.load("pineapple1.png").convert_alpha()
+pygame.Surface.set_colorkey (pineappleImg, [255,255,255])
+pineappleImg = pygame.transform.scale(pineappleImg, (1000, 800))
+
+pineappleImg2 = pygame.image.load("pineapple2.png").convert_alpha()
+pygame.Surface.set_colorkey (pineappleImg2, [255,255,255])
+
+fishImg = pygame.image.load("fish.png").convert_alpha()
+pygame.Surface.set_colorkey (fishImg, [255,0,255])
+
+ffishImg = pygame.image.load("flat-fish.png").convert_alpha()
+pygame.Surface.set_colorkey (ffishImg, [255,0,255])
+ffishImg = pygame.transform.scale(ffishImg, (150, 100))
+
+fffishImg = pygame.image.load("trop-fish.png").convert_alpha()
+pygame.Surface.set_colorkey (fffishImg, [255,0,255])
+fffishImg = pygame.transform.scale(fffishImg, (150, 100))
+
+
+while 1: #game loop###########################################################
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+            
+        print(mousePos) #this is to help you know where to set these boundaries
+        
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            
+            #background selection
+            if mousePos[0]>1000 and mousePos[0] < 1200 and mousePos[1]>50 and mousePos[1]<225:
+               background = 1 #school
+            elif mousePos[0]>1000 and mousePos[0] < 1200 and mousePos[1]>225 and mousePos[1]<425:
+                background = 2 #pineapples
+                
+            #fish selection
+            elif mousePos[0]>25 and mousePos[0] < 200 and mousePos[1]>50 and mousePos[1]<150:
+               fishieXpos.append(random.randrange(250, 900))
+               fishieYpos.append(random.randrange(50,750))
+            elif mousePos[0]>25 and mousePos[0] < 400 and mousePos[1]>50 and mousePos[1]<250:
+               fishieXpos2.append(random.randrange(250, 900))
+               fishieYpos2.append(random.randrange(50,750))
+            elif mousePos[0]>25 and mousePos[0] < 600 and mousePos[1]>50 and mousePos[1]<350:
+               fishieXpos3.append(random.randrange(250, 900))
+               fishieYpos3.append(random.randrange(50,750))
+         
+        if event.type == pygame.MOUSEMOTION:
+            mousePos = event.pos        
+    
+
+    #render section------------------------------
+    
+    screen.fill((27, 51, 207))# Clear the screen
+
+    #fill in "water" for tank
+    pygame.draw.rect(screen, (100, 100, 200), (200, 0, 800, 800)) #make sure you know what these numbers do!
+
+    #draw the lines on the screen
+    pygame.draw.line(screen, (255,255,255), (200, 0), (200, 800), 2) #make sure you know what these numbers do!
+    pygame.draw.line(screen, (255,255,255), (1000, 0), (1000, 800), 2)
+    
+    #draw background image
+    if background == 1:
+        screen.blit(schoolImg, (100, 0))
+    elif background ==2: 
+        screen.blit(pineappleImg, (100, 0))
+    
+    #draw fishies!
+    for i in range(len(fishieXpos)):
+        screen.blit(fishImg, (fishieXpos[i], fishieYpos[i]))
+    for i in range(len(fishieXpos2)):
+        screen.blit(ffishImg, (fishieXpos2[i], fishieYpos2[i]))
+    for i in range(len(fishieXpos3)):
+        screen.blit(fffishImg, (fishieXpos3[i], fishieYpos3[i]))
+        
+    #show sidebar images
+    screen.blit(schoolImg2, (1000, 50))
+    screen.blit(pineappleImg2, (1010, 250))
+    screen.blit(fishImg, (50, 50))
+    screen.blit(ffishImg, (50, 150))
+    screen.blit(fffishImg, (50, 300))
+    
+    pygame.display.flip()# Update the display
+
+#end of game loop###################################################################
+pygame.quit()
